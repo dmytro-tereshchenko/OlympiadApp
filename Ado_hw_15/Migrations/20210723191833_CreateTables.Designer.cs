@@ -4,14 +4,16 @@ using Ado_hw_15;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ado_hw_15.Migrations
 {
     [DbContext(typeof(OlympiadContext))]
-    partial class OlympiadContextModelSnapshot : ModelSnapshot
+    [Migration("20210723191833_CreateTables")]
+    partial class CreateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +35,6 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique();
-
                     b.ToTable("Cities");
                 });
 
@@ -52,10 +51,6 @@ namespace Ado_hw_15.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id1");
 
                     b.ToTable("Countries");
                 });
@@ -75,13 +70,9 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id2");
+                    b.HasIndex("OlympiadId");
 
-                    b.HasIndex(new[] { "OlympiadId" }, "Index_OlympiadId");
-
-                    b.HasIndex(new[] { "TypeOfSportId" }, "Index_TypeOfSportId");
+                    b.HasIndex("TypeOfSportId");
 
                     b.ToTable("Disciplines");
                 });
@@ -99,10 +90,7 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Year");
 
-                    b.HasIndex(new[] { "HostCountryId" }, "Index_HostCountryId");
-
-                    b.HasIndex(new[] { "Year" }, "Index_Year_Key")
-                        .IsUnique();
+                    b.HasIndex("HostCountryId");
 
                     b.ToTable("Olimpiads");
                 });
@@ -139,15 +127,7 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "CountryId" }, "Index_CountryId");
-
-                    b.HasIndex(new[] { "FirstName" }, "Index_FirstName");
-
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id3");
-
-                    b.HasIndex(new[] { "LastName" }, "Index_LastName");
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Participants");
                 });
@@ -170,13 +150,9 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "DisciplineId" }, "Index_DisciplineId");
+                    b.HasIndex("DisciplineId");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id4");
-
-                    b.HasIndex(new[] { "ParticipantId" }, "Index_ParticipantId");
+                    b.HasIndex("ParticipantId");
 
                     b.ToTable("ResultParticipants");
                 });
@@ -194,10 +170,6 @@ namespace Ado_hw_15.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id5");
 
                     b.ToTable("TypeOfSports");
                 });

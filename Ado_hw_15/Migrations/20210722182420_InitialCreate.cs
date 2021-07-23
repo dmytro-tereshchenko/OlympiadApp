@@ -7,7 +7,7 @@ namespace Ado_hw_15.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Countrys",
+                name: "Countries",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -16,14 +16,14 @@ namespace Ado_hw_15.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countrys", x => x.Id);
+                    table.PrimaryKey("PK_Countries", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Countrys");
+                name: "Countries");
         }
     }
 }

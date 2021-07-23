@@ -33,6 +33,10 @@ namespace Ado_hw_15
                 new Customer { Id = 1, Name = "The Very Big Corporation of America" },
                 new Customer { Id = 2, Name = "Old Accountants Ltd" }
             };
+            using(OlympiadContext db = new OlympiadContext(options))
+            {
+
+            }
         }
 
     }
