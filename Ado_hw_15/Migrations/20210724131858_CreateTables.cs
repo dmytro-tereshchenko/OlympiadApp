@@ -80,21 +80,21 @@ namespace Ado_hw_15.Migrations
                 name: "CityOlympiad",
                 columns: table => new
                 {
-                    CitiesId = table.Column<int>(type: "int", nullable: false),
-                    OlympiadsYear = table.Column<short>(type: "smallint", nullable: false)
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    OlympiadYear = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CityOlympiad", x => new { x.CitiesId, x.OlympiadsYear });
+                    table.PrimaryKey("PK_CityOlympiad", x => new { x.CityId, x.OlympiadYear });
                     table.ForeignKey(
-                        name: "FK_CityOlympiad_Cities_CitiesId",
-                        column: x => x.CitiesId,
+                        name: "FK_CityOlympiad_Cities_CityId",
+                        column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CityOlympiad_Olimpiads_OlympiadsYear",
-                        column: x => x.OlympiadsYear,
+                        name: "FK_CityOlympiad_Olimpiads_OlympiadYear",
+                        column: x => x.OlympiadYear,
                         principalTable: "Olimpiads",
                         principalColumn: "Year",
                         onDelete: ReferentialAction.Cascade);
@@ -130,21 +130,21 @@ namespace Ado_hw_15.Migrations
                 name: "ParticipantTypeOfSport",
                 columns: table => new
                 {
-                    ParticipantsId = table.Column<int>(type: "int", nullable: false),
-                    TypeOfSportsId = table.Column<int>(type: "int", nullable: false)
+                    ParticipantId = table.Column<int>(type: "int", nullable: false),
+                    TypeOfSportId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParticipantTypeOfSport", x => new { x.ParticipantsId, x.TypeOfSportsId });
+                    table.PrimaryKey("PK_ParticipantTypeOfSport", x => new { x.ParticipantId, x.TypeOfSportId });
                     table.ForeignKey(
-                        name: "FK_ParticipantTypeOfSport_Participants_ParticipantsId",
-                        column: x => x.ParticipantsId,
+                        name: "FK_ParticipantTypeOfSport_Participants_ParticipantId",
+                        column: x => x.ParticipantId,
                         principalTable: "Participants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ParticipantTypeOfSport_TypeOfSports_TypeOfSportsId",
-                        column: x => x.TypeOfSportsId,
+                        name: "FK_ParticipantTypeOfSport_TypeOfSports_TypeOfSportId",
+                        column: x => x.TypeOfSportId,
                         principalTable: "TypeOfSports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -154,21 +154,21 @@ namespace Ado_hw_15.Migrations
                 name: "DisciplineParticipant",
                 columns: table => new
                 {
-                    DisciplinesId = table.Column<int>(type: "int", nullable: false),
-                    ParticipantsId = table.Column<int>(type: "int", nullable: false)
+                    ParticipantId = table.Column<int>(type: "int", nullable: false),
+                    DisciplineId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DisciplineParticipant", x => new { x.DisciplinesId, x.ParticipantsId });
+                    table.PrimaryKey("PK_DisciplineParticipant", x => new { x.DisciplineId, x.ParticipantId });
                     table.ForeignKey(
-                        name: "FK_DisciplineParticipant_Disciplines_DisciplinesId",
-                        column: x => x.DisciplinesId,
+                        name: "FK_DisciplineParticipant_Disciplines_DisciplineId",
+                        column: x => x.DisciplineId,
                         principalTable: "Disciplines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DisciplineParticipant_Participants_ParticipantsId",
-                        column: x => x.ParticipantsId,
+                        name: "FK_DisciplineParticipant_Participants_ParticipantId",
+                        column: x => x.ParticipantId,
                         principalTable: "Participants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -202,14 +202,14 @@ namespace Ado_hw_15.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CityOlympiad_OlympiadsYear",
+                name: "IX_CityOlympiad_OlympiadYear",
                 table: "CityOlympiad",
-                column: "OlympiadsYear");
+                column: "OlympiadYear");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DisciplineParticipant_ParticipantsId",
+                name: "IX_DisciplineParticipant_ParticipantId",
                 table: "DisciplineParticipant",
-                column: "ParticipantsId");
+                column: "ParticipantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Disciplines_OlympiadId",
@@ -232,9 +232,9 @@ namespace Ado_hw_15.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParticipantTypeOfSport_TypeOfSportsId",
+                name: "IX_ParticipantTypeOfSport_TypeOfSportId",
                 table: "ParticipantTypeOfSport",
-                column: "TypeOfSportsId");
+                column: "TypeOfSportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResultParticipants_DisciplineId",

@@ -6,7 +6,6 @@ using System.Text;
 
 namespace Ado_hw_15
 {
-    [Index("Id", IsUnique = true, Name = "Index_Id")]
     public class Country
     {
         [Key, Required]

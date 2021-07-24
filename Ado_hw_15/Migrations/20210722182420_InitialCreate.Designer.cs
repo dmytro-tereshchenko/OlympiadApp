@@ -34,7 +34,7 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countrys");
+                    b.ToTable("Countries");
                 });
 #pragma warning restore 612, 618
         }

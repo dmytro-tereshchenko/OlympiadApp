@@ -7,8 +7,6 @@ using System.Text;
 
 namespace Ado_hw_15
 {
-    [Index("Year", IsUnique = true, Name = "Index_Year_Key")]
-    [Index("HostCountryId", IsUnique = false, Name = "Index_HostCountryId")]
     public class Olympiad
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None), Required, Column(TypeName="smallint")]
@@ -19,7 +17,7 @@ namespace Ado_hw_15
         public int HostCountryId { get; set; }
         [ForeignKey("HostCountryId")]
         public virtual Country HostCountry { get; set; }
-        public virtual List<City> Cities { get; set; } = new List<City>();
+        public virtual List<CityOlympiad> CityOlympiads { get; set; } = new List<CityOlympiad>();
         public virtual List<Discipline> Disciplines { get; set; } = new List<Discipline>();
 
     }

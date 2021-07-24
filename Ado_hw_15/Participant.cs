@@ -7,10 +7,8 @@ using System.Text;
 
 namespace Ado_hw_15
 {
-    [Index("Id", IsUnique = true, Name = "Index_Id")]
     [Index("FirstName", IsUnique = false, Name = "Index_FirstName")]
     [Index("LastName", IsUnique = false, Name = "Index_LastName")]
-    [Index("CountryId", IsUnique = false, Name = "Index_CountryId")]
     public class Participant
     {
         [Key, Required]
@@ -25,10 +23,10 @@ namespace Ado_hw_15
         [ForeignKey("CountryId")]
         public virtual Country Country { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public virtual List<TypeOfSport> TypeOfSports { get; set; } = new List<TypeOfSport>();
+        public virtual List<ParticipantTypeOfSport> ParticipantTypeOfSports { get; set; } = new List<ParticipantTypeOfSport>();
         [Column(TypeName = "image")]
         public byte[] Photo { get; set; }
-        public virtual List<Discipline> Disciplines { get; set; } = new List<Discipline>();
+        public virtual List<DisciplineParticipant> DisciplineParticipants { get; set; } = new List<DisciplineParticipant>();
         public virtual List<ResultParticipant> ResultParticipants { get; set; } = new List<ResultParticipant>();
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ado_hw_15.Migrations
 {
     [DbContext(typeof(OlympiadContext))]
-    [Migration("20210723194913_CreateIndexes")]
-    partial class CreateIndexes
+    [Migration("20210724132103_AddIndexes")]
+    partial class AddIndexes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,10 +35,22 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique();
-
                     b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("Ado_hw_15.CityOlympiad", b =>
+                {
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<short>("OlympiadYear")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("CityId", "OlympiadYear");
+
+                    b.HasIndex("OlympiadYear");
+
+                    b.ToTable("CityOlympiad");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Country", b =>
@@ -54,10 +66,6 @@ namespace Ado_hw_15.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id1");
 
                     b.ToTable("Countries");
                 });
@@ -77,15 +85,26 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id2");
+                    b.HasIndex("OlympiadId");
 
-                    b.HasIndex(new[] { "OlympiadId" }, "Index_OlympiadId");
-
-                    b.HasIndex(new[] { "TypeOfSportId" }, "Index_TypeOfSportId");
+                    b.HasIndex("TypeOfSportId");
 
                     b.ToTable("Disciplines");
+                });
+
+            modelBuilder.Entity("Ado_hw_15.DisciplineParticipant", b =>
+                {
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DisciplineId", "ParticipantId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("DisciplineParticipant");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Olympiad", b =>
@@ -101,10 +120,7 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Year");
 
-                    b.HasIndex(new[] { "HostCountryId" }, "Index_HostCountryId");
-
-                    b.HasIndex(new[] { "Year" }, "Index_Year_Key")
-                        .IsUnique();
+                    b.HasIndex("HostCountryId");
 
                     b.ToTable("Olimpiads");
                 });
@@ -141,17 +157,28 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "CountryId" }, "Index_CountryId");
+                    b.HasIndex("CountryId");
 
                     b.HasIndex(new[] { "FirstName" }, "Index_FirstName");
-
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id3");
 
                     b.HasIndex(new[] { "LastName" }, "Index_LastName");
 
                     b.ToTable("Participants");
+                });
+
+            modelBuilder.Entity("Ado_hw_15.ParticipantTypeOfSport", b =>
+                {
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeOfSportId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParticipantId", "TypeOfSportId");
+
+                    b.HasIndex("TypeOfSportId");
+
+                    b.ToTable("ParticipantTypeOfSport");
                 });
 
             modelBuilder.Entity("Ado_hw_15.ResultParticipant", b =>
@@ -172,13 +199,9 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "DisciplineId" }, "Index_DisciplineId");
+                    b.HasIndex("DisciplineId");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id4");
-
-                    b.HasIndex(new[] { "ParticipantId" }, "Index_ParticipantId");
+                    b.HasIndex("ParticipantId");
 
                     b.ToTable("ResultParticipants");
                 });
@@ -197,56 +220,26 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Id" }, "Index_Id")
-                        .IsUnique()
-                        .HasDatabaseName("Index_Id5");
-
                     b.ToTable("TypeOfSports");
                 });
 
-            modelBuilder.Entity("CityOlympiad", b =>
+            modelBuilder.Entity("Ado_hw_15.CityOlympiad", b =>
                 {
-                    b.Property<int>("CitiesId")
-                        .HasColumnType("int");
+                    b.HasOne("Ado_hw_15.City", "City")
+                        .WithMany("CityOlympiads")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<short>("OlympiadsYear")
-                        .HasColumnType("smallint");
+                    b.HasOne("Ado_hw_15.Olympiad", "Olympiad")
+                        .WithMany("CityOlympiads")
+                        .HasForeignKey("OlympiadYear")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("CitiesId", "OlympiadsYear");
+                    b.Navigation("City");
 
-                    b.HasIndex("OlympiadsYear");
-
-                    b.ToTable("CityOlympiad");
-                });
-
-            modelBuilder.Entity("DisciplineParticipant", b =>
-                {
-                    b.Property<int>("DisciplinesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParticipantsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DisciplinesId", "ParticipantsId");
-
-                    b.HasIndex("ParticipantsId");
-
-                    b.ToTable("DisciplineParticipant");
-                });
-
-            modelBuilder.Entity("ParticipantTypeOfSport", b =>
-                {
-                    b.Property<int>("ParticipantsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TypeOfSportsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ParticipantsId", "TypeOfSportsId");
-
-                    b.HasIndex("TypeOfSportsId");
-
-                    b.ToTable("ParticipantTypeOfSport");
+                    b.Navigation("Olympiad");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Discipline", b =>
@@ -266,6 +259,25 @@ namespace Ado_hw_15.Migrations
                     b.Navigation("Olimpiad");
 
                     b.Navigation("TypeOfSport");
+                });
+
+            modelBuilder.Entity("Ado_hw_15.DisciplineParticipant", b =>
+                {
+                    b.HasOne("Ado_hw_15.Discipline", "Discipline")
+                        .WithMany("DisciplineParticipants")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ado_hw_15.Participant", "Participant")
+                        .WithMany("DisciplineParticipants")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Olympiad", b =>
@@ -288,6 +300,25 @@ namespace Ado_hw_15.Migrations
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("Ado_hw_15.ParticipantTypeOfSport", b =>
+                {
+                    b.HasOne("Ado_hw_15.Participant", "Participant")
+                        .WithMany("ParticipantTypeOfSports")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ado_hw_15.TypeOfSport", "TypeOfSport")
+                        .WithMany("ParticipantTypeOfSports")
+                        .HasForeignKey("TypeOfSportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Participant");
+
+                    b.Navigation("TypeOfSport");
+                });
+
             modelBuilder.Entity("Ado_hw_15.ResultParticipant", b =>
                 {
                     b.HasOne("Ado_hw_15.Discipline", "Discipline")
@@ -307,49 +338,9 @@ namespace Ado_hw_15.Migrations
                     b.Navigation("Participant");
                 });
 
-            modelBuilder.Entity("CityOlympiad", b =>
+            modelBuilder.Entity("Ado_hw_15.City", b =>
                 {
-                    b.HasOne("Ado_hw_15.City", null)
-                        .WithMany()
-                        .HasForeignKey("CitiesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ado_hw_15.Olympiad", null)
-                        .WithMany()
-                        .HasForeignKey("OlympiadsYear")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DisciplineParticipant", b =>
-                {
-                    b.HasOne("Ado_hw_15.Discipline", null)
-                        .WithMany()
-                        .HasForeignKey("DisciplinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ado_hw_15.Participant", null)
-                        .WithMany()
-                        .HasForeignKey("ParticipantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ParticipantTypeOfSport", b =>
-                {
-                    b.HasOne("Ado_hw_15.Participant", null)
-                        .WithMany()
-                        .HasForeignKey("ParticipantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ado_hw_15.TypeOfSport", null)
-                        .WithMany()
-                        .HasForeignKey("TypeOfSportsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("CityOlympiads");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Country", b =>
@@ -361,22 +352,32 @@ namespace Ado_hw_15.Migrations
 
             modelBuilder.Entity("Ado_hw_15.Discipline", b =>
                 {
+                    b.Navigation("DisciplineParticipants");
+
                     b.Navigation("ResultParticipants");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Olympiad", b =>
                 {
+                    b.Navigation("CityOlympiads");
+
                     b.Navigation("Disciplines");
                 });
 
             modelBuilder.Entity("Ado_hw_15.Participant", b =>
                 {
+                    b.Navigation("DisciplineParticipants");
+
+                    b.Navigation("ParticipantTypeOfSports");
+
                     b.Navigation("ResultParticipants");
                 });
 
             modelBuilder.Entity("Ado_hw_15.TypeOfSport", b =>
                 {
                     b.Navigation("Disciplines");
+
+                    b.Navigation("ParticipantTypeOfSports");
                 });
 #pragma warning restore 612, 618
         }

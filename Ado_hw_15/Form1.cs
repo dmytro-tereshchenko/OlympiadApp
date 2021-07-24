@@ -20,13 +20,9 @@ namespace Ado_hw_15
         public Form1()
         {
             InitializeComponent();
-            var builder = new ConfigurationBuilder();
-            builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder.AddJsonFile("appsettings.json");
-            var config = builder.Build();
-            string connectionString = config.GetConnectionString("DefaultConnection");
-            var optionsBuilder = new DbContextOptionsBuilder<OlympiadContext>();
-            options = optionsBuilder.UseSqlServer(connectionString).Options;
+            Configures config = new Configures("appsettings.json");
+            options = config.GetOptions("DefaultConnection");
+            string picturesDirectoryPath = config.GetStringParameter("PicturesDirectoryPath");
 
             dataGridView1.DataSource = new List<Customer>
             {
@@ -37,6 +33,8 @@ namespace Ado_hw_15
             {
 
             }
+
+            pictureBox1.Image = PictureCreator.GetImage($"{picturesDirectoryPath}1.jpg");
         }
 
     }
