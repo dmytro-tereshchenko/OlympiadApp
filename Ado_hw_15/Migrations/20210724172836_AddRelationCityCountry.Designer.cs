@@ -4,14 +4,16 @@ using Ado_hw_15;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ado_hw_15.Migrations
 {
     [DbContext(typeof(OlympiadContext))]
-    partial class OlympiadContextModelSnapshot : ModelSnapshot
+    [Migration("20210724172836_AddRelationCityCountry")]
+    partial class AddRelationCityCountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

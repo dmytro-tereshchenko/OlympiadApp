@@ -11,7 +11,7 @@ namespace Ado_hw_15
         public DbSet<City> Cities { get; set; }
         public DbSet<TypeOfSport> TypeOfSports { get; set; }
         public DbSet<Participant> Participants { get; set; }
-        public DbSet<Olympiad> Olimpiads { get; set; }
+        public DbSet<Olympiad> Olympiads { get; set; }
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<ResultParticipant> ResultParticipants { get; set; }
         public OlympiadContext(DbContextOptions<OlympiadContext> options) : base(options)
@@ -24,6 +24,10 @@ namespace Ado_hw_15
             modelBuilder.Entity<CityOlympiad>().HasKey(u => new { u.CityId, u.OlympiadYear });
             modelBuilder.Entity<DisciplineParticipant>().HasKey(u => new { u.DisciplineId, u.ParticipantId });
             modelBuilder.Entity<ParticipantTypeOfSport>().HasKey(u => new { u.ParticipantId, u.TypeOfSportId });
+            modelBuilder.Entity<City>().HasOne(d => d.Country)
+                    .WithMany(c=>c.Cities)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientNoAction);
             Country[] countries = new Country[]
             {
                 new Country(){Id=1, Name="USA"},
@@ -34,11 +38,11 @@ namespace Ado_hw_15
             };
             City[] cities = new City[]
             {
-                new City(){Id=1, Name="Washington"},
-                new City(){Id=2, Name="Rio de Janeiro"},
-                new City(){Id=3, Name="London"},
-                new City(){Id=4, Name="Berlin"},
-                new City(){Id=5, Name="Beijing"}
+                new City(){Id=1, Name="Washington", CountryId=1},
+                new City(){Id=2, Name="Rio de Janeiro", CountryId=2},
+                new City(){Id=3, Name="London", CountryId=3},
+                new City(){Id=4, Name="Berlin", CountryId=4},
+                new City(){Id=5, Name="Beijing", CountryId=5}
             };
             TypeOfSport[] typeOfSports = new TypeOfSport[]
             {

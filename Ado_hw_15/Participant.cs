@@ -28,5 +28,7 @@ namespace Ado_hw_15
         public byte[] Photo { get; set; }
         public virtual List<DisciplineParticipant> DisciplineParticipants { get; set; } = new List<DisciplineParticipant>();
         public virtual List<ResultParticipant> ResultParticipants { get; set; } = new List<ResultParticipant>();
+        [NotMapped]
+        public string FullName { get => $"{FirstName} {(MiddleName is null ? "" : MiddleName + " ")}{LastName}"; }
     }
 }

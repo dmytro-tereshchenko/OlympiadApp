@@ -21,5 +21,7 @@ namespace Ado_hw_15
         public virtual Discipline Discipline { get; set; }
         [Column(TypeName = "smallint")]
         public int? Position { get; set; }
+        [NotMapped]
+        public string ResultView { get => $"{Participant.FullName} - {Discipline.Name}"; }
     }
 }

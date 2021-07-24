@@ -14,6 +14,7 @@ namespace Ado_hw_15
         public string Name { get; set; }
         public virtual List<Olympiad> Olympiads { get; set; } = new List<Olympiad>();
         public virtual List<Participant> Participants { get; set; } = new List<Participant>();
+        public virtual List<City> Cities { get; set; } = new List<City>();
 
     }
 }

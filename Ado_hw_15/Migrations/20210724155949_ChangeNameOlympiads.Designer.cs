@@ -4,14 +4,16 @@ using Ado_hw_15;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ado_hw_15.Migrations
 {
     [DbContext(typeof(OlympiadContext))]
-    partial class OlympiadContextModelSnapshot : ModelSnapshot
+    [Migration("20210724155949_ChangeNameOlympiads")]
+    partial class ChangeNameOlympiads
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +28,6 @@ namespace Ado_hw_15.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -36,39 +35,32 @@ namespace Ado_hw_15.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
-
                     b.ToTable("Cities");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CountryId = 1,
                             Name = "Washington"
                         },
                         new
                         {
                             Id = 2,
-                            CountryId = 2,
                             Name = "Rio de Janeiro"
                         },
                         new
                         {
                             Id = 3,
-                            CountryId = 3,
                             Name = "London"
                         },
                         new
                         {
                             Id = 4,
-                            CountryId = 4,
                             Name = "Berlin"
                         },
                         new
                         {
                             Id = 5,
-                            CountryId = 5,
                             Name = "Beijing"
                         });
                 });
@@ -1304,17 +1296,6 @@ namespace Ado_hw_15.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Ado_hw_15.City", b =>
-                {
-                    b.HasOne("Ado_hw_15.Country", "Country")
-                        .WithMany("Cities")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.ClientNoAction)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("Ado_hw_15.CityOlympiad", b =>
                 {
                     b.HasOne("Ado_hw_15.City", "City")
@@ -1437,8 +1418,6 @@ namespace Ado_hw_15.Migrations
 
             modelBuilder.Entity("Ado_hw_15.Country", b =>
                 {
-                    b.Navigation("Cities");
-
                     b.Navigation("Olympiads");
 
                     b.Navigation("Participants");
