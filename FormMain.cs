@@ -296,43 +296,5 @@ namespace OlympiadApp
                 UpdateComboBoxCity(new OlympiadContext(options));
             }
         }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            FormCountry form = new FormCountry(options);
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                UpdateComboBoxCountry(new OlympiadContext(options));
-            }
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            FormCountry form = new FormCountry(options);
-            form.Country = comboBox2.SelectedItem as Country;
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                UpdateComboBoxCountry(new OlympiadContext(options));
-            }
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            FormTypeOfSport form = new FormTypeOfSport(options);
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                UpdateComboBoxTypeOfSport(new OlympiadContext(options));
-            }
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            FormTypeOfSport form = new FormTypeOfSport(options);
-            form.TypeOfSport = comboBox4.SelectedItem as TypeOfSport;
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                UpdateComboBoxTypeOfSport(new OlympiadContext(options));
-            }
-        }
     }
 }

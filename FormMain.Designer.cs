@@ -215,7 +215,6 @@
             this.button5.TabIndex = 5;
             this.button5.Text = "New";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -225,7 +224,6 @@
             this.button6.TabIndex = 5;
             this.button6.Text = "Edit";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // comboBox2
             // 
@@ -317,7 +315,6 @@
             this.button11.TabIndex = 5;
             this.button11.Text = "New";
             this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button12
             // 
@@ -327,7 +324,6 @@
             this.button12.TabIndex = 5;
             this.button12.Text = "Edit";
             this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // comboBox4
             // 
