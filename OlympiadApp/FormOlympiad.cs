@@ -23,8 +23,8 @@ namespace OlympiadApp
             comboBox2.DisplayMember = "Name";
             listBox1.DisplayMember = "Name";
             OlympiadContext db = new OlympiadContext(options);
-            UpdateComboBoxCountry(db, false);
-            UpdateComboBoxCity(db);
+            ComboBoxControl.UpdateComboBoxCountry(db, comboBox1, false);
+            ComboBoxControl.UpdateComboBoxCity(db, comboBox2);
         }
         public Olympiad Olympiad
         {
@@ -42,7 +42,7 @@ namespace OlympiadApp
                 }
                 using(OlympiadContext db = new OlympiadContext(options))
                 {
-                    UpdateComboBoxCity(db, false);
+                    ComboBoxControl.UpdateComboBoxCity(db, comboBox2, false);
                     listBox1.Items.Clear();
                     listBox1.Items.AddRange(db.CityOlympiads
                         .Where(co=>co.OlympiadYear==olympiad.Year)
@@ -61,38 +61,12 @@ namespace OlympiadApp
                 }
             }
         }
-        private void UpdateComboBoxCountry(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(db.Countries.ToArray());
-            if (comboBox1.Items.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxCity(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox2.Items.Clear();
-            comboBox2.Items.AddRange(db.Cities.Include("Country").Where(cit=>cit.Country.Name==comboBox1.Text).Distinct().ToArray());
-            if (comboBox2.Items.Count > 0)
-            {
-                comboBox2.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox1.SelectedIndex != -1)
             {
-                UpdateComboBoxCity(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxCity(new OlympiadContext(options), comboBox2);
             }
         }
 

@@ -21,66 +21,16 @@ namespace OlympiadApp
             resultParticipant = null;
             comboBox1.DisplayMember = "FullName";
             comboBox2.DisplayMember = "Name";
-            UpdateComboBoxDiscipline(new OlympiadContext(options));
+            ComboBoxControl.UpdateComboBoxDiscipline(new OlympiadContext(options), comboBox2);
         }
         public ResultParticipant ResultParticipant
         {
             set
             {
                 resultParticipant = value;
-                foreach (Participant participant in comboBox1.Items)
-                {
-                    if (participant.Id == resultParticipant.ParticipantId)
-                    {
-                        comboBox1.SelectedItem = participant;
-                        break;
-                    }
-                }
-                foreach (Discipline discipline in comboBox2.Items)
-                {
-                    if (discipline.Id == resultParticipant.DisciplineId)
-                    {
-                        comboBox2.SelectedItem = discipline;
-                        break;
-                    }
-                }
+                ComboBoxControl.SelectParticipant(comboBox1, resultParticipant.ParticipantId);
+                ComboBoxControl.SelectDiscipline(comboBox2, resultParticipant.DisciplineId);
                 numericUpDown1.Value = Convert.ToDecimal(resultParticipant.Position is null ? 0 : resultParticipant.Position.Value);
-            }
-        }
-
-        private void UpdateComboBoxParticipant(OlympiadContext db, Discipline discipline, bool closeConnection = true)
-        {
-            comboBox1.Items.Clear();
-            comboBox1.Text = "";
-            comboBox1.Items.AddRange(db.DisciplineParticipants
-                .Where(dp => dp.DisciplineId == discipline.Id)
-                .Join(db.Participants,
-                disPar => disPar.ParticipantId,
-                p => p.Id,
-                (disPar, p) => p)
-                .ToArray());
-            if (comboBox1.Items.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-
-        private void UpdateComboBoxDiscipline(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox2.Items.Clear();
-            comboBox2.Text = "";
-            comboBox2.Items.AddRange(db.Disciplines.Include(t => t.TypeOfSport).ToArray());
-            if (comboBox2.Items.Count > 0)
-            {
-                comboBox2.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
             }
         }
 
@@ -126,7 +76,7 @@ namespace OlympiadApp
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateComboBoxParticipant(new OlympiadContext(options), comboBox2.SelectedItem as Discipline);
+            ComboBoxControl.UpdateComboBoxParticipant(new OlympiadContext(options), comboBox1, comboBox2.SelectedItem as Discipline);
         }
     }
 }

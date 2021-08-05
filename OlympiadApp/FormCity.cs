@@ -21,7 +21,7 @@ namespace OlympiadApp
             city = null;
             comboBox1.DisplayMember = "Name";
             OlympiadContext db = new OlympiadContext(options);
-            UpdateComboBoxCountry(db);
+            ComboBoxControl.UpdateComboBoxCountry(db, comboBox1);
         }
         public City City
         {
@@ -37,19 +37,6 @@ namespace OlympiadApp
                         break;
                     }
                 }
-            }
-        }
-        private void UpdateComboBoxCountry(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(db.Countries.ToArray());
-            if (comboBox1.Items.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
             }
         }
 

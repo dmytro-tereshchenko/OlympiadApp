@@ -23,8 +23,8 @@ namespace OlympiadApp
             comboBox2.DisplayMember = "Name";
             listBox1.DisplayMember = "Name";
             OlympiadContext db = new OlympiadContext(options);
-            UpdateComboBoxTypeOfSport(db, false);
-            UpdateComboBoxCountry(db);
+            ComboBoxControl.UpdateComboBoxTypeOfSport(db, comboBox2, false);
+            ComboBoxControl.UpdateComboBoxCountry(db, comboBox1);
         }
         public Participant Participant
         {
@@ -34,18 +34,11 @@ namespace OlympiadApp
                 textBox1.Text = participant.FirstName;
                 textBox2.Text = participant.MiddleName;
                 textBox3.Text = participant.LastName;
-                foreach (Country country in comboBox1.Items)
-                {
-                    if (country.Id == participant.CountryId)
-                    {
-                        comboBox1.SelectedItem = country;
-                        break;
-                    }
-                }
+                ComboBoxControl.SelectCountry(comboBox1, participant.CountryId);
                 dateTimePicker1.Value = participant.DateOfBirth;
                 using (OlympiadContext db = new OlympiadContext(options))
                 {
-                    UpdateComboBoxTypeOfSport(db, false);
+                    ComboBoxControl.UpdateComboBoxTypeOfSport(db, comboBox2, false);
                     listBox1.Items.Clear();
                     listBox1.Items.AddRange(db.ParticipantTypeOfSports
                         .Where(pts => pts.ParticipantId == participant.Id)
@@ -54,34 +47,6 @@ namespace OlympiadApp
                         s => s.Id,
                         (parSport, s) => s).ToArray());
                 };
-            }
-        }
-
-        private void UpdateComboBoxCountry(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(db.Countries.ToArray());
-            if (comboBox1.Items.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-
-        private void UpdateComboBoxTypeOfSport(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox2.Items.Clear();
-            comboBox2.Items.AddRange(db.TypeOfSports.ToArray());
-            if (comboBox2.Items.Count > 0)
-            {
-                comboBox2.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
             }
         }
 

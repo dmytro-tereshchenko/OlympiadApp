@@ -31,112 +31,15 @@ namespace OlympiadApp
             Configures config = new Configures("appsettings.json");
             options = config.GetOptions("DefaultConnection");
             OlympiadContext db = new OlympiadContext(options);
-            UpdateComboBoxOlympiad(db, false);
-            UpdateComboBoxCountry(db, false);
-            UpdateComboBoxCity(db, false);
-            UpdateComboBoxTypeOfSport(db, false);
-            UpdateComboBoxParticipant(db, false);
-            UpdateComboBoxDiscipline(db, false);
-            UpdateComboBoxResultParticipant(db);
+            ComboBoxControl.UpdateComboBoxOlympiad(db, comboBox1, false);
+            ComboBoxControl.UpdateComboBoxCountry(db, comboBox2, false);
+            ComboBoxControl.UpdateComboBoxCity(db, comboBox3, false);
+            ComboBoxControl.UpdateComboBoxTypeOfSport(db, comboBox4, false);
+            ComboBoxControl.UpdateComboBoxParticipant(db, comboBox5, false);
+            ComboBoxControl.UpdateComboBoxDiscipline(db, comboBox6, false);
+            ComboBoxControl.UpdateComboBoxResultParticipant(db, comboBox7);
             //string picturesDirectoryPath = config.GetStringParameter("PicturesDirectoryPath");
             //pictureBox1.Image = PictureCreator.GetImage($"{picturesDirectoryPath}1.jpg");
-        }
-        private void UpdateComboBoxOlympiad(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(db.Olympiads.ToArray());
-            if (comboBox1.Items.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxCountry(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox2.Items.Clear();
-            comboBox2.Items.AddRange(db.Countries.ToArray());
-            if (comboBox2.Items.Count > 0)
-            {
-                comboBox2.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxCity(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox3.Items.Clear();
-            comboBox3.Items.AddRange(db.Cities.ToArray());
-            if (comboBox3.Items.Count > 0)
-            {
-                comboBox3.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxTypeOfSport(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox4.Items.Clear();
-            comboBox4.Items.AddRange(db.TypeOfSports.ToArray());
-            if (comboBox4.Items.Count > 0)
-            {
-                comboBox4.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxParticipant(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox5.Items.Clear();
-            comboBox5.Items.AddRange(db.Participants.ToArray());
-            if (comboBox5.Items.Count > 0)
-            {
-                comboBox5.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxDiscipline(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox6.Items.Clear();
-            comboBox6.Items.AddRange(db.Disciplines
-                .Include(d=>d.TypeOfSport)
-                .ToArray());
-            if (comboBox6.Items.Count > 0)
-            {
-                comboBox6.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
-        }
-        private void UpdateComboBoxResultParticipant(OlympiadContext db, bool closeConnection = true)
-        {
-            comboBox7.Items.Clear();
-            comboBox7.Items.AddRange(db.ResultParticipants
-                .Include(rp => rp.Participant)
-                .Include(rp => rp.Discipline)
-                .Include(rp => rp.Discipline.TypeOfSport)
-                .ToArray());
-            if (comboBox7.Items.Count > 0)
-            {
-                comboBox7.SelectedIndex = 0;
-            }
-            if (closeConnection)
-            {
-                db.Dispose();
-            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -152,7 +55,7 @@ namespace OlympiadApp
                 {
                     db.Olympiads.Remove(olympiad);
                     db.SaveChanges();
-                    UpdateComboBoxOlympiad(db, false);
+                    ComboBoxControl.UpdateComboBoxOlympiad(db, comboBox1, false);
                 }
             }
         }
@@ -170,7 +73,7 @@ namespace OlympiadApp
                 {
                     db.Countries.Remove(country);
                     db.SaveChanges();
-                    UpdateComboBoxCountry(db, false);
+                    ComboBoxControl.UpdateComboBoxCountry(db, comboBox2, false);
                 }
             }
         }
@@ -188,7 +91,7 @@ namespace OlympiadApp
                 {
                     db.Cities.Remove(city);
                     db.SaveChanges();
-                    UpdateComboBoxCity(db, false);
+                    ComboBoxControl.UpdateComboBoxCity(db, comboBox3, false);
                 }
             }
         }
@@ -206,7 +109,7 @@ namespace OlympiadApp
                 {
                     db.TypeOfSports.Remove(typeOfSport);
                     db.SaveChanges();
-                    UpdateComboBoxTypeOfSport(db, false);
+                    ComboBoxControl.UpdateComboBoxTypeOfSport(db, comboBox4, false);
                 }
             }
         }
@@ -224,7 +127,7 @@ namespace OlympiadApp
                 {
                     db.Participants.Remove(participant);
                     db.SaveChanges();
-                    UpdateComboBoxParticipant(db, false);
+                    ComboBoxControl.UpdateComboBoxParticipant(db, comboBox5, false);
                 }
             }
         }
@@ -242,7 +145,7 @@ namespace OlympiadApp
                 {
                     db.Disciplines.Remove(discipline);
                     db.SaveChanges();
-                    UpdateComboBoxDiscipline(db, false);
+                    ComboBoxControl.UpdateComboBoxDiscipline(db, comboBox6, false);
                 }
             }
         }
@@ -260,7 +163,7 @@ namespace OlympiadApp
                 {
                     db.ResultParticipants.Remove(resultParticipant);
                     db.SaveChanges();
-                    UpdateComboBoxResultParticipant(db, false);
+                    ComboBoxControl.UpdateComboBoxResultParticipant(db, comboBox7, false);
                 }
             }
         }
@@ -270,7 +173,7 @@ namespace OlympiadApp
             FormOlympiad form = new FormOlympiad(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxOlympiad(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxOlympiad(new OlympiadContext(options), comboBox1);
             }
         }
 
@@ -280,7 +183,7 @@ namespace OlympiadApp
             form.Olympiad = comboBox1.SelectedItem as Olympiad;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxOlympiad(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxOlympiad(new OlympiadContext(options), comboBox1);
             }
         }
 
@@ -289,7 +192,7 @@ namespace OlympiadApp
             FormCity form = new FormCity(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxCity(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxCity(new OlympiadContext(options), comboBox3, false);
             }
         }
 
@@ -299,7 +202,7 @@ namespace OlympiadApp
             form.City = comboBox3.SelectedItem as City;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxCity(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxCity(new OlympiadContext(options), comboBox3, false);
             }
         }
 
@@ -308,7 +211,7 @@ namespace OlympiadApp
             FormCountry form = new FormCountry(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxCountry(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxCountry(new OlympiadContext(options), comboBox2);
             }
         }
 
@@ -318,7 +221,7 @@ namespace OlympiadApp
             form.Country = comboBox2.SelectedItem as Country;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxCountry(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxCountry(new OlympiadContext(options), comboBox2);
             }
         }
 
@@ -327,7 +230,7 @@ namespace OlympiadApp
             FormTypeOfSport form = new FormTypeOfSport(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxTypeOfSport(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxTypeOfSport(new OlympiadContext(options), comboBox4);
             }
         }
 
@@ -337,7 +240,7 @@ namespace OlympiadApp
             form.TypeOfSport = comboBox4.SelectedItem as TypeOfSport;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxTypeOfSport(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxTypeOfSport(new OlympiadContext(options), comboBox4);
             }
         }
 
@@ -346,7 +249,7 @@ namespace OlympiadApp
             FormDiscipline form = new FormDiscipline(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxDiscipline(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxDiscipline(new OlympiadContext(options), comboBox6);
             }
         }
 
@@ -356,7 +259,7 @@ namespace OlympiadApp
             form.Discipline = comboBox6.SelectedItem as Discipline;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxDiscipline(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxDiscipline(new OlympiadContext(options), comboBox6);
             }
         }
 
@@ -365,7 +268,7 @@ namespace OlympiadApp
             FormParticipant form = new FormParticipant(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxParticipant(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxParticipant(new OlympiadContext(options), comboBox5);
             }
         }
 
@@ -375,7 +278,7 @@ namespace OlympiadApp
             form.Participant = comboBox5.SelectedItem as Participant;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxParticipant(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxParticipant(new OlympiadContext(options), comboBox5);
             }
         }
 
@@ -384,7 +287,7 @@ namespace OlympiadApp
             FormResultParticipant form = new FormResultParticipant(options);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxResultParticipant(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxResultParticipant(new OlympiadContext(options), comboBox7);
             }
         }
 
@@ -394,7 +297,7 @@ namespace OlympiadApp
             form.ResultParticipant = comboBox7.SelectedItem as ResultParticipant;
             if (form.ShowDialog() == DialogResult.OK)
             {
-                UpdateComboBoxResultParticipant(new OlympiadContext(options));
+                ComboBoxControl.UpdateComboBoxResultParticipant(new OlympiadContext(options), comboBox7);
             }
         }
     }
