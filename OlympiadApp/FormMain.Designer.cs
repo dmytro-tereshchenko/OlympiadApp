@@ -417,6 +417,7 @@
             this.button17.TabIndex = 5;
             this.button17.Text = "New";
             this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // button18
             // 
@@ -426,6 +427,7 @@
             this.button18.TabIndex = 5;
             this.button18.Text = "Edit";
             this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // comboBox6
             // 

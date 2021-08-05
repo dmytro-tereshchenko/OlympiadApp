@@ -109,7 +109,7 @@ namespace OlympiadApp
         private void UpdateComboBoxDiscipline(OlympiadContext db, bool closeConnection = true)
         {
             comboBox6.Items.Clear();
-            comboBox6.Items.AddRange(db.Disciplines.ToArray());
+            comboBox6.Items.AddRange(db.Disciplines.Include(t=>t.TypeOfSport).ToArray());
             if (comboBox6.Items.Count > 0)
             {
                 comboBox6.SelectedIndex = 0;
@@ -332,6 +332,25 @@ namespace OlympiadApp
             if (form.ShowDialog() == DialogResult.OK)
             {
                 UpdateComboBoxTypeOfSport(new OlympiadContext(options));
+            }
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            FormDiscipline form = new FormDiscipline(options);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateComboBoxDiscipline(new OlympiadContext(options));
+            }
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            FormDiscipline form = new FormDiscipline(options);
+            form.Discipline = comboBox6.SelectedItem as Discipline;
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateComboBoxDiscipline(new OlympiadContext(options));
             }
         }
     }

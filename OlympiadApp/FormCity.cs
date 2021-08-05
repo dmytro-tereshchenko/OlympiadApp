@@ -84,7 +84,7 @@ namespace OlympiadApp
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error in {this}, create object City, exception: {ex.Message}");
+                    MessageBox.Show($"Error in {this}, create object {typeof(City)}, exception: {ex.Message}");
                 }
             }
             this.DialogResult = DialogResult.OK;

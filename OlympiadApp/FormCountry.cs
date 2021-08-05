@@ -59,7 +59,7 @@ namespace OlympiadApp
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error in {this}, create object Country, exception: {ex.Message}");
+                    MessageBox.Show($"Error in {this}, create object {typeof(Country)}, exception: {ex.Message}");
                 }
             }
             this.DialogResult = DialogResult.OK;
