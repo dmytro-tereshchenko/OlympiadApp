@@ -43,6 +43,11 @@ namespace OlympiadApp
         {
             using (OlympiadContext db = new OlympiadContext(options))
             {
+                if (comboBox1.SelectedIndex == -1 || string.IsNullOrEmpty(comboBox1.Text))
+                {
+                    MessageBox.Show("Field Participant i required");
+                    return;
+                }
                 try
                 {
                     if (resultParticipant == null)
