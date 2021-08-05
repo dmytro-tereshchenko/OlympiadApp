@@ -1,0 +1,167 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace OlympiadApp
+{
+    public partial class FormParticipant : Form
+    {
+        private DbContextOptions<OlympiadContext> options;
+        private Participant participant;
+        public FormParticipant(DbContextOptions<OlympiadContext> options)
+        {
+            InitializeComponent();
+            this.options = options;
+            participant = null;
+            comboBox1.DisplayMember = "Name";
+            comboBox2.DisplayMember = "Name";
+            listBox1.DisplayMember = "Name";
+            OlympiadContext db = new OlympiadContext(options);
+            UpdateComboBoxTypeOfSport(db, false);
+            UpdateComboBoxCountry(db);
+        }
+        public Participant Participant
+        {
+            set
+            {
+                participant = value;
+                textBox1.Text = participant.FirstName;
+                textBox2.Text = participant.MiddleName;
+                textBox3.Text = participant.LastName;
+                foreach (Country country in comboBox1.Items)
+                {
+                    if (country.Id == participant.CountryId)
+                    {
+                        comboBox1.SelectedItem = country;
+                        break;
+                    }
+                }
+                dateTimePicker1.Value = participant.DateOfBirth;
+                using (OlympiadContext db = new OlympiadContext(options))
+                {
+                    UpdateComboBoxTypeOfSport(db, false);
+                    listBox1.Items.Clear();
+                    listBox1.Items.AddRange(db.ParticipantTypeOfSports
+                        .Where(pts => pts.ParticipantId == participant.Id)
+                        .Join(db.TypeOfSports,
+                        parSport => parSport.TypeOfSportId,
+                        s => s.Id,
+                        (parSport, s) => s).ToArray());
+                };
+            }
+        }
+
+        private void UpdateComboBoxCountry(OlympiadContext db, bool closeConnection = true)
+        {
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(db.Countries.ToArray());
+            if (comboBox1.Items.Count > 0)
+            {
+                comboBox1.SelectedIndex = 0;
+            }
+            if (closeConnection)
+            {
+                db.Dispose();
+            }
+        }
+
+        private void UpdateComboBoxTypeOfSport(OlympiadContext db, bool closeConnection = true)
+        {
+            comboBox2.Items.Clear();
+            comboBox2.Items.AddRange(db.TypeOfSports.ToArray());
+            if (comboBox2.Items.Count > 0)
+            {
+                comboBox2.SelectedIndex = 0;
+            }
+            if (closeConnection)
+            {
+                db.Dispose();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (comboBox2.SelectedIndex != -1 && !listBox1.Items.Contains(comboBox2.SelectedItem))
+            {
+                listBox1.Items.Add(comboBox2.SelectedItem);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+            {
+                listBox1.Items.Remove(listBox1.SelectedItem);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            StringBuilder message = new StringBuilder();
+            if (string.IsNullOrEmpty(textBox1.Text))
+            {
+                message.Append("FirstName i required field\n");
+            }
+            if (string.IsNullOrEmpty(textBox3.Text))
+            {
+                message.Append("LastName i required field");
+            }
+            if (message.Length > 1)
+            {
+                MessageBox.Show(message.ToString());
+                return;
+            }
+            using (OlympiadContext db = new OlympiadContext(options))
+            {
+                try
+                {
+                    if (participant == null)
+                    {
+                        participant = new Participant();
+                        db.Participants.Add(participant);
+                    }
+                    else
+                    {
+                        participant = db.Participants.Find(participant.Id);
+                    }
+                    participant.FirstName = textBox1.Text;
+                    if (!string.IsNullOrEmpty(textBox2.Text))
+                    {
+                        participant.MiddleName = textBox2.Text;
+                    }
+                    participant.LastName = textBox3.Text;
+                    participant.CountryId = (comboBox1.SelectedItem as Country).Id;
+                    participant.DateOfBirth = dateTimePicker1.Value;
+                    db.ParticipantTypeOfSports
+                        .RemoveRange(db.ParticipantTypeOfSports
+                        .Where(pts => pts.ParticipantId == participant.Id));
+                    foreach (TypeOfSport typeOfSport in listBox1.Items)
+                    {
+                        participant.ParticipantTypeOfSports.Add(new ParticipantTypeOfSport()
+                        {
+                            ParticipantId = participant.Id,
+                            TypeOfSportId = typeOfSport.Id
+                        });
+                    }
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error in {this}, create object {typeof(Participant)}, exception: {ex.Message}");
+                }
+            }
+            this.DialogResult = DialogResult.OK;
+        }
+    }
+}

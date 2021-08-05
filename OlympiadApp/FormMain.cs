@@ -353,5 +353,24 @@ namespace OlympiadApp
                 UpdateComboBoxDiscipline(new OlympiadContext(options));
             }
         }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            FormParticipant form = new FormParticipant(options);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateComboBoxParticipant(new OlympiadContext(options));
+            }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            FormParticipant form = new FormParticipant(options);
+            form.Participant = comboBox5.SelectedItem as Participant;
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateComboBoxParticipant(new OlympiadContext(options));
+            }
+        }
     }
 }

@@ -21,10 +21,14 @@ namespace OlympiadApp
             discipline = null;
             comboBox1.DisplayMember = "Name";
             comboBox2.DisplayMember = "Year";
+            comboBox3.DisplayMember = "FullName";
+            listBox1.DisplayMember = "FullName";
             OlympiadContext db = new OlympiadContext(options);
             UpdateComboBoxTypeOfSport(db, false);
-            UpdateComboBoxOlympiad(db);
+            UpdateComboBoxOlympiad(db, false);
+            UpdateComboBoxParticipant(db);
         }
+
         public Discipline Discipline
         {
             set
@@ -46,6 +50,17 @@ namespace OlympiadApp
                         break;
                     }
                 }
+                using (OlympiadContext db = new OlympiadContext(options))
+                {
+                    UpdateComboBoxParticipant(db, false);
+                    listBox1.Items.Clear();
+                    listBox1.Items.AddRange(db.DisciplineParticipants
+                        .Where(dp => dp.DisciplineId == discipline.Id)
+                        .Join(db.Participants,
+                        discPart => discPart.ParticipantId,
+                        p => p.Id,
+                        (discPart, p) => p).ToArray());
+                };
             }
         }
 
@@ -77,6 +92,20 @@ namespace OlympiadApp
             }
         }
 
+        private void UpdateComboBoxParticipant(OlympiadContext db, bool closeConnection = true)
+        {
+            comboBox3.Items.Clear();
+            comboBox3.Items.AddRange(db.Participants.ToArray());
+            if (comboBox3.Items.Count > 0)
+            {
+                comboBox3.SelectedIndex = 0;
+            }
+            if (closeConnection)
+            {
+                db.Dispose();
+            }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -99,6 +128,17 @@ namespace OlympiadApp
                     }
                     discipline.TypeOfSportId = (comboBox1.SelectedItem as TypeOfSport).Id;
                     discipline.OlympiadYear = (comboBox2.SelectedItem as Olympiad).Year;
+                    db.DisciplineParticipants
+                        .RemoveRange(db.DisciplineParticipants
+                        .Where(dp => dp.DisciplineId == discipline.Id));
+                    foreach (Participant participant in listBox1.Items)
+                    {
+                        discipline.DisciplineParticipants.Add(new DisciplineParticipant()
+                        {
+                            DisciplineId = discipline.Id,
+                            ParticipantId = participant.Id
+                        });
+                    }
                     db.SaveChanges();
                 }
                 catch (Exception ex)
@@ -107,6 +147,22 @@ namespace OlympiadApp
                 }
             }
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (comboBox3.SelectedIndex != -1 && !listBox1.Items.Contains(comboBox3.SelectedItem))
+            {
+                listBox1.Items.Add(comboBox3.SelectedItem);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+            {
+                listBox1.Items.Remove(listBox1.SelectedItem);
+            }
         }
     }
 }
