@@ -109,7 +109,9 @@ namespace OlympiadApp
         private void UpdateComboBoxDiscipline(OlympiadContext db, bool closeConnection = true)
         {
             comboBox6.Items.Clear();
-            comboBox6.Items.AddRange(db.Disciplines.Include(t=>t.TypeOfSport).ToArray());
+            comboBox6.Items.AddRange(db.Disciplines
+                .Include(d=>d.TypeOfSport)
+                .ToArray());
             if (comboBox6.Items.Count > 0)
             {
                 comboBox6.SelectedIndex = 0;
@@ -122,7 +124,11 @@ namespace OlympiadApp
         private void UpdateComboBoxResultParticipant(OlympiadContext db, bool closeConnection = true)
         {
             comboBox7.Items.Clear();
-            comboBox7.Items.AddRange(db.ResultParticipants.ToArray());
+            comboBox7.Items.AddRange(db.ResultParticipants
+                .Include(rp => rp.Participant)
+                .Include(rp => rp.Discipline)
+                .Include(rp => rp.Discipline.TypeOfSport)
+                .ToArray());
             if (comboBox7.Items.Count > 0)
             {
                 comboBox7.SelectedIndex = 0;
@@ -370,6 +376,25 @@ namespace OlympiadApp
             if (form.ShowDialog() == DialogResult.OK)
             {
                 UpdateComboBoxParticipant(new OlympiadContext(options));
+            }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            FormResultParticipant form = new FormResultParticipant(options);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateComboBoxResultParticipant(new OlympiadContext(options));
+            }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            FormResultParticipant form = new FormResultParticipant(options);
+            form.ResultParticipant = comboBox7.SelectedItem as ResultParticipant;
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateComboBoxResultParticipant(new OlympiadContext(options));
             }
         }
     }

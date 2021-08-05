@@ -24,6 +24,6 @@ namespace OlympiadApp
         public virtual List<DisciplineParticipant> DisciplineParticipants { get; set; } = new List<DisciplineParticipant>();
         public virtual List<ResultParticipant> ResultParticipants { get; set; } = new List<ResultParticipant>();
         [NotMapped]
-        public string Name { get => $"{TypeOfSport.Name} {OlympiadYear}"; }
+        public string Name { get => $"{OlympiadYear} - {TypeOfSport.Name}"; }
     }
 }

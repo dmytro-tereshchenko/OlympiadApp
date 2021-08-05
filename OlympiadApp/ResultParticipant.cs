@@ -22,6 +22,6 @@ namespace OlympiadApp
         [Column(TypeName = "smallint")]
         public int? Position { get; set; }
         [NotMapped]
-        public string ResultView { get => $"{Participant.FullName} - {Discipline.Name}"; }
+        public string ResultView { get => $"{Discipline.Name} - {Participant.FullName}"; }
     }
 }
