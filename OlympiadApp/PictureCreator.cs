@@ -13,21 +13,17 @@ namespace OlympiadApp
         {
             Image img = Image.FromFile(imagePath);
             int maxWidth = 300, maxHeight = 300;
-            //размеры выбраны произвольно
             double ratioX = (double)maxWidth / img.Width;
             double ratioY = (double)maxHeight / img.Height;
             double ratio = Math.Min(ratioX, ratioY);
             int newWidth = (int)(img.Width * ratio);
             int newHeight = (int)(img.Height * ratio);
             Image mi = new Bitmap(newWidth, newHeight);
-            //рисунок в памяти
             Graphics g = Graphics.FromImage(mi);
             g.DrawImage(img, 0, 0, newWidth, newHeight);
             MemoryStream ms = new MemoryStream();
-            //поток для ввода|вывода байт из памяти
             mi.Save(ms, ImageFormat.Jpeg);
-            ms.Flush();//выносим в поток все данные
-                       //из буфера
+            ms.Flush();
             ms.Seek(0, SeekOrigin.Begin);
             BinaryReader br = new BinaryReader(ms);
             byte[] buf = br.ReadBytes((int)ms.Length);
@@ -37,6 +33,16 @@ namespace OlympiadApp
         {
             MemoryStream stream = new MemoryStream(Download(imagePath));
             return Image.FromStream(stream);
+        }
+        public static byte[] GetBytesFromImage(Image image)
+        {
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Jpeg);
+            ms.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            BinaryReader br = new BinaryReader(ms);
+            byte[] buf = br.ReadBytes((int)ms.Length);
+            return buf;
         }
     }
 }

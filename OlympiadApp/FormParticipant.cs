@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -36,6 +37,10 @@ namespace OlympiadApp
                 textBox3.Text = participant.LastName;
                 ComboBoxControl.SelectCountry(comboBox1, participant.CountryId);
                 dateTimePicker1.Value = participant.DateOfBirth;
+                if (participant.Photo != null)
+                {
+                    pictureBox1.Image = Image.FromStream(new MemoryStream(participant.Photo));
+                }
                 using (OlympiadContext db = new OlympiadContext(options))
                 {
                     ComboBoxControl.UpdateComboBoxTypeOfSport(db, comboBox2, false);
@@ -108,6 +113,10 @@ namespace OlympiadApp
                     participant.LastName = textBox3.Text;
                     participant.CountryId = (comboBox1.SelectedItem as Country).Id;
                     participant.DateOfBirth = dateTimePicker1.Value;
+                    if (pictureBox1.Image != null)
+                    {
+                        participant.Photo = PictureCreator.GetBytesFromImage(pictureBox1.Image);
+                    }
                     db.ParticipantTypeOfSports
                         .RemoveRange(db.ParticipantTypeOfSports
                         .Where(pts => pts.ParticipantId == participant.Id));
@@ -127,6 +136,19 @@ namespace OlympiadApp
                 }
             }
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog file = new OpenFileDialog())
+            {
+                file.InitialDirectory = Directory.GetCurrentDirectory();
+                file.Filter = "Image Files(*.BMP;*.JPG;*.JPEG;*.GIF)|*.BMP;*.JPG;*.JPEG;*.GIF";
+                if (file.ShowDialog() == DialogResult.OK)
+                {
+                    pictureBox1.Image = PictureCreator.GetImage(file.FileName);
+                }
+            }
         }
     }
 }
