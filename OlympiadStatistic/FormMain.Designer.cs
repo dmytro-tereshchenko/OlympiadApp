@@ -44,17 +44,22 @@ namespace OlympiadStatistic
             this.comboBoxTabPage4 = new System.Windows.Forms.ComboBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
+            this.comboBoxTabPage6_Country = new System.Windows.Forms.ComboBox();
             this.comboBoxTabPage6_Olympiad = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBoxTabPage6_Country = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.comboBoxTabPage7_Country = new System.Windows.Forms.ComboBox();
+            this.comboBoxTabPage7_Olympiad = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -213,23 +218,14 @@ namespace OlympiadStatistic
             this.tabPage6.Text = "Composition of the Olympic team of the country\'s athletes";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
-            // tabPage7
+            // comboBoxTabPage6_Country
             // 
-            this.tabPage7.Location = new System.Drawing.Point(4, 24);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(869, 386);
-            this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "Country performance statistics";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(92, 15);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Olympiad (year)";
+            this.comboBoxTabPage6_Country.FormattingEnabled = true;
+            this.comboBoxTabPage6_Country.Location = new System.Drawing.Point(304, 13);
+            this.comboBoxTabPage6_Country.Name = "comboBoxTabPage6_Country";
+            this.comboBoxTabPage6_Country.Size = new System.Drawing.Size(121, 23);
+            this.comboBoxTabPage6_Country.TabIndex = 1;
+            this.comboBoxTabPage6_Country.SelectedIndexChanged += new System.EventHandler(this.comboBoxTabPage6_Country_SelectedIndexChanged);
             // 
             // comboBoxTabPage6_Olympiad
             // 
@@ -249,14 +245,63 @@ namespace OlympiadStatistic
             this.label6.TabIndex = 0;
             this.label6.Text = "Country";
             // 
-            // comboBoxTabPage6_Country
+            // label5
             // 
-            this.comboBoxTabPage6_Country.FormattingEnabled = true;
-            this.comboBoxTabPage6_Country.Location = new System.Drawing.Point(304, 13);
-            this.comboBoxTabPage6_Country.Name = "comboBoxTabPage6_Country";
-            this.comboBoxTabPage6_Country.Size = new System.Drawing.Size(121, 23);
-            this.comboBoxTabPage6_Country.TabIndex = 1;
-            this.comboBoxTabPage6_Country.SelectedIndexChanged += new System.EventHandler(this.comboBoxTabPage6_SelectedIndexChanged);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(92, 15);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Olympiad (year)";
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.comboBoxTabPage7_Country);
+            this.tabPage7.Controls.Add(this.comboBoxTabPage7_Olympiad);
+            this.tabPage7.Controls.Add(this.label8);
+            this.tabPage7.Controls.Add(this.label7);
+            this.tabPage7.Location = new System.Drawing.Point(4, 24);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(869, 386);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Country performance statistics";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxTabPage7_Country
+            // 
+            this.comboBoxTabPage7_Country.FormattingEnabled = true;
+            this.comboBoxTabPage7_Country.Location = new System.Drawing.Point(304, 13);
+            this.comboBoxTabPage7_Country.Name = "comboBoxTabPage7_Country";
+            this.comboBoxTabPage7_Country.Size = new System.Drawing.Size(121, 23);
+            this.comboBoxTabPage7_Country.TabIndex = 1;
+            this.comboBoxTabPage7_Country.SelectedIndexChanged += new System.EventHandler(this.comboBoxTabPage7_Country_SelectedIndexChanged);
+            // 
+            // comboBoxTabPage7_Olympiad
+            // 
+            this.comboBoxTabPage7_Olympiad.FormattingEnabled = true;
+            this.comboBoxTabPage7_Olympiad.Location = new System.Drawing.Point(108, 13);
+            this.comboBoxTabPage7_Olympiad.Name = "comboBoxTabPage7_Olympiad";
+            this.comboBoxTabPage7_Olympiad.Size = new System.Drawing.Size(121, 23);
+            this.comboBoxTabPage7_Olympiad.TabIndex = 1;
+            this.comboBoxTabPage7_Olympiad.SelectedIndexChanged += new System.EventHandler(this.comboBoxTabPage7_Olympiad_SelectedIndexChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(248, 16);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(50, 15);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Country";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(92, 15);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Olympiad (year)";
             // 
             // FormMain
             // 
@@ -277,6 +322,8 @@ namespace OlympiadStatistic
             this.tabPage4.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -303,6 +350,10 @@ namespace OlympiadStatistic
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox comboBoxTabPage6_Country;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBoxTabPage7_Country;
+        private System.Windows.Forms.ComboBox comboBoxTabPage7_Olympiad;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }
 

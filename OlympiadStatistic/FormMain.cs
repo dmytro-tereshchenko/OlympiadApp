@@ -21,6 +21,7 @@ namespace OlympiadStatistic
         private DataGridView dataGridViewTabPage4;
         private DataGridView dataGridViewTabPage5;
         private DataGridView dataGridViewTabPage6;
+        private DataGridView dataGridViewTabPage7;
         public FormMain()
         {
             InitializeComponent();
@@ -73,12 +74,22 @@ namespace OlympiadStatistic
             this.dataGridViewTabPage6.Size = new Size(841, 328);
             this.tabPage6.Controls.Add(this.dataGridViewTabPage6);
 
+            this.dataGridViewTabPage7 = new DataGridView();
+            this.dataGridViewTabPage7.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTabPage7.Location = new Point(14, 44);
+            this.dataGridViewTabPage7.Margin = new Padding(4, 3, 4, 3);
+            this.dataGridViewTabPage7.Name = "dataGridViewTabPage7";
+            this.dataGridViewTabPage7.Size = new Size(841, 328);
+            this.tabPage7.Controls.Add(this.dataGridViewTabPage7);
+
             comboBoxTabPage1.DisplayMember = "Year";
             comboBoxTabPage2.DisplayMember = "Year";
             comboBoxTabPage3.DisplayMember = "Year";
             comboBoxTabPage4.DisplayMember = "Name";
             comboBoxTabPage6_Olympiad.DisplayMember = "Year";
             comboBoxTabPage6_Country.DisplayMember = "Name";
+            comboBoxTabPage7_Olympiad.DisplayMember = "Year";
+            comboBoxTabPage7_Country.DisplayMember = "Name";
             Configures config = new Configures("appsettings.json");
             options = config.GetOptions("DefaultConnection");
             OlympiadContext db = new OlympiadContext(options);
@@ -87,6 +98,7 @@ namespace OlympiadStatistic
             ComboBoxControl.UpdateComboBoxOlympiad(db, comboBoxTabPage3, false);
             ComboBoxControl.UpdateComboBoxTypeOfSport(db, comboBoxTabPage4, false);
             ComboBoxControl.UpdateComboBoxOlympiad(db, comboBoxTabPage6_Olympiad, false);
+            ComboBoxControl.UpdateComboBoxOlympiad(db, comboBoxTabPage7_Olympiad);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -128,12 +140,13 @@ namespace OlympiadStatistic
                             Country = g_s?.Country ?? bronze?.Country,
                             GoldMedals = g_s?.GoldMedals ?? 0,
                             SilverMedals = g_s?.SilverMedals ?? 0,
-                            BronzeMedals = bronze?.BronzeMedals ?? 0
+                            BronzeMedals = bronze?.BronzeMedals ?? 0,
+                            Total = (g_s?.GoldMedals ?? 0) + (g_s?.SilverMedals ?? 0) + (bronze?.BronzeMedals ?? 0)
                         })
                         .OrderByDescending(m => m.GoldMedals)
                         .ThenByDescending(m => m.SilverMedals)
                         .ThenByDescending(m => m.BronzeMedals)
-                    .ToList();
+                        .ToList();
                 }
             }
         }
@@ -231,13 +244,22 @@ namespace OlympiadStatistic
             }
         }
 
-        private void comboBoxTabPage6_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxTabPage6_Country_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxTabPage6_Olympiad.SelectedIndex != -1 && comboBoxTabPage6_Country.SelectedIndex != -1)
             {
                 using (OlympiadContext db = new OlympiadContext(options))
                 {
-                    dataGridViewTabPage6.DataSource = db.Participants
+                    dataGridViewTabPage6.DataSource = db.Disciplines
+                        .Where(d => d.OlympiadYear == (comboBoxTabPage6_Olympiad.SelectedItem as Olympiad).Year)
+                        .Join(db.DisciplineParticipants,
+                            dis => dis.Id,
+                            disPar => disPar.DisciplineId,
+                            (dis, disPar) => disPar)
+                        .Join(db.Participants,
+                            disPar => disPar.ParticipantId,
+                            p => p.Id,
+                            (disPar, p) => p)
                         .Where(p => p.CountryId == (comboBoxTabPage6_Country.SelectedItem as Country).Id)
                         .Select(p => new
                         {
@@ -256,6 +278,68 @@ namespace OlympiadStatistic
             {
                 OlympiadContext db = new OlympiadContext(options);
                 ComboBoxControl.UpdateComboBoxCountry(db, comboBoxTabPage6_Country, comboBoxTabPage6_Olympiad.SelectedItem as Olympiad);
+            }
+        }
+
+        private void comboBoxTabPage7_Olympiad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxTabPage7_Olympiad.SelectedIndex != -1)
+            {
+                OlympiadContext db = new OlympiadContext(options);
+                ComboBoxControl.UpdateComboBoxCountry(db, comboBoxTabPage7_Country, comboBoxTabPage7_Olympiad.SelectedItem as Olympiad);
+            }
+        }
+
+        private void comboBoxTabPage7_Country_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxTabPage7_Olympiad.SelectedIndex != -1 && comboBoxTabPage7_Country.SelectedIndex != -1)
+            {
+                using (OlympiadContext db = new OlympiadContext(options))
+                {
+                    var countGoldMedals = db.ResultParticipants
+                        .Include(r => r.Discipline)
+                        .Include(r => r.Participant)
+                        .Include(r => r.Participant.Country)
+                        .Where(r => r.Discipline.OlympiadYear == (comboBoxTabPage7_Olympiad.SelectedItem as Olympiad).Year &&
+                            r.Position == 1 &&
+                            r.Participant.CountryId == (comboBoxTabPage7_Country.SelectedItem as Country).Id)
+                        .GroupBy(r => r.Participant.Country.Name)
+                        .Select(r => new { Country = r.Key, GoldMedals = r.Count() });
+                    var countSilverMedals = db.ResultParticipants
+                        .Where(r => r.Discipline.OlympiadYear == (comboBoxTabPage7_Olympiad.SelectedItem as Olympiad).Year &&
+                            r.Position == 2 &&
+                            r.Participant.CountryId == (comboBoxTabPage7_Country.SelectedItem as Country).Id)
+                        .GroupBy(r => r.Participant.Country.Name)
+                        .Select(r => new { Country = r.Key, SilverMedals = r.Count() });
+                    var countBronzeMedals = db.ResultParticipants
+                        .Where(r => r.Discipline.OlympiadYear == (comboBoxTabPage7_Olympiad.SelectedItem as Olympiad).Year &&
+                            r.Position == 3 &&
+                            r.Participant.CountryId == (comboBoxTabPage7_Country.SelectedItem as Country).Id)
+                        .GroupBy(r => r.Participant.Country.Name)
+                        .Select(r => new { Country = r.Key, BronzeMedals = r.Count() });
+                    dataGridViewTabPage7.DataSource = countGoldMedals.Outer()
+                        .FullOuterJoin(countSilverMedals.Outer(),
+                        gold => gold.Country,
+                        silver => silver.Country,
+                        (gold, silver) => new
+                        {
+                            Country = gold?.Country ?? silver?.Country,
+                            GoldMedals = gold?.GoldMedals ?? 0,
+                            SilverMedals = silver?.SilverMedals ?? 0
+                        })
+                        .FullOuterJoin(countBronzeMedals.Outer(),
+                        g_s => g_s.Country,
+                        bronze => bronze.Country,
+                        (g_s, bronze) => new
+                        {
+                            Country = g_s?.Country ?? bronze?.Country,
+                            GoldMedals = g_s?.GoldMedals ?? 0,
+                            SilverMedals = g_s?.SilverMedals ?? 0,
+                            BronzeMedals = bronze?.BronzeMedals ?? 0,
+                            Total = (g_s?.GoldMedals ?? 0) + (g_s?.SilverMedals ?? 0) + (bronze?.BronzeMedals ?? 0)
+                        })
+                        .ToList();
+                }
             }
         }
     }
