@@ -112,7 +112,7 @@ namespace OlympiadApp
                     }
                     participant.LastName = textBox3.Text;
                     participant.CountryId = (comboBox1.SelectedItem as Country).Id;
-                    participant.DateOfBirth = dateTimePicker1.Value;
+                    participant.DateOfBirth = dateTimePicker1.Value.Date;
                     if (pictureBox1.Image != null)
                     {
                         participant.Photo = PictureCreator.GetBytesFromImage(pictureBox1.Image);

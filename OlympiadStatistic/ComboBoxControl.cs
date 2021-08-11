@@ -133,6 +133,35 @@ namespace OlympiadApp
                 db.Dispose();
             }
         }
+        public static void UpdateComboBoxCountry(OlympiadContext db, ComboBox comboBox, Olympiad olympiad, bool closeConnection = true)
+        {
+            comboBox.Items.Clear();
+            comboBox.Text = "";
+            comboBox.Items.AddRange(db.Disciplines
+                .Where(d => d.OlympiadYear == olympiad.Year)
+                .Join(db.DisciplineParticipants,
+                dis => dis.Id,
+                disPar => disPar.DisciplineId,
+                (dis, disPar) => disPar)
+                .Join(db.Participants,
+                disPar => disPar.ParticipantId,
+                p => p.Id,
+                (disPar, p) => p)
+                .Join(db.Countries,
+                p => p.CountryId,
+                c => c.Id,
+                (p, c) => c)
+                .Distinct()
+                .ToArray());
+            if (comboBox.Items.Count > 0)
+            {
+                comboBox.SelectedIndex = 0;
+            }
+            if (closeConnection)
+            {
+                db.Dispose();
+            }
+        }
         public static void SelectParticipant(ComboBox comboBox, int participantId)
         {
             foreach (Participant participant in comboBox.Items)
