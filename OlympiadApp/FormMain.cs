@@ -38,8 +38,6 @@ namespace OlympiadApp
             ComboBoxControl.UpdateComboBoxParticipant(db, comboBox5, false);
             ComboBoxControl.UpdateComboBoxDiscipline(db, comboBox6, false);
             ComboBoxControl.UpdateComboBoxResultParticipant(db, comboBox7);
-            //string picturesDirectoryPath = config.GetStringParameter("PicturesDirectoryPath");
-            //pictureBox1.Image = PictureCreator.GetImage($"{picturesDirectoryPath}1.jpg");
         }
 
         private void button3_Click(object sender, EventArgs e)
