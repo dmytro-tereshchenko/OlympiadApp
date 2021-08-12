@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OlympiadLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

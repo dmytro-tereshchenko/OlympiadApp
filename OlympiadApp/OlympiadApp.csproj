@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pictures\" />
+    <Reference Include="OlympiadLibrary">
+      <HintPath>..\OlympiadLibrary\bin\Debug\netcoreapp3.1\OlympiadLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

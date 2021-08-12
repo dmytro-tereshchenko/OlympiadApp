@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OlympiadApp;
+using OlympiadLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
